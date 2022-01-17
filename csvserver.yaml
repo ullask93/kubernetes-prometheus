@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csvserver
+  labels:
+    name: csvserver
+spec:
+  containers:
+  - name: csvserver
+    image: infracloudio/csvserver:latest
+    volumeMounts:
+      - mountPath: /csvserver/inputdata
+        name: csv-volume
+  - name: prometheus
+    image: prom/prometheus:v2.22.0
+    volumeMounts:
+      - mountPath: /etc/prometheus/prometheus.yml
+        name: prom-volume
+  volumes:
+    - name: csv-volume
+      hostPath:
+        path: /tmp/inputFile
+        type: File
+    - name: prom-volume
+      hostPath:
+        path: /tmp/prometheus.yml
+        type: File

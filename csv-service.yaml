@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: csvserver
+spec:
+  selector:
+    name: csvserver
+  ports:
+  - name: csvserver
+    port: 9393
+    targetPort: 9300
+  - name: prometheus
+    port: 9090
+    targetPort: 9090
