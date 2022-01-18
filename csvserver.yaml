@@ -8,6 +8,9 @@ spec:
   containers:
   - name: csvserver
     image: infracloudio/csvserver:latest
+    env:
+      - name: CSVSERVER_BORDER
+        value: "Orange"
     volumeMounts:
       - mountPath: /csvserver/inputdata
         name: csv-volume
