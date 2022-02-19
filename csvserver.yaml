@@ -1,30 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: csvserver
+  name: csvserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csvserver
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: csvserver
+    spec:
+      containers:
+      - image: infracloudio/csvserver:latest
+        name: csvserver
+        volumeMounts:
+          - mountPath: /csvserver/inputdata
+            name: config
+            readOnly: true
+            subPath: inputFile
+      volumes:
+        - name: config
+          configMap:
+            name: csv-prom
+
+---
 apiVersion: v1
-kind: Pod
+kind: Service
 metadata:
   name: csvserver
-  labels:
-    name: csvserver
 spec:
-  containers:
+  selector:
+    app: csvserver
+  ports:
   - name: csvserver
-    image: infracloudio/csvserver:latest
-    env:
-      - name: CSVSERVER_BORDER
-        value: "Orange"
-    volumeMounts:
-      - mountPath: /csvserver/inputdata
-        name: csv-volume
-  - name: prometheus
-    image: prom/prometheus:v2.22.0
-    volumeMounts:
-      - mountPath: /etc/prometheus/prometheus.yml
-        name: prom-volume
-  volumes:
-    - name: csv-volume
-      hostPath:
-        path: /tmp/inputFile
-        type: File
-    - name: prom-volume
-      hostPath:
-        path: /tmp/prometheus.yml
-        type: File
+    port: 9300
+    targetPort: 9300
