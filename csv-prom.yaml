@@ -1,10 +1,27 @@
 apiVersion: v1
 data:
-  gencsv.sh: "#!/bin/bash\n\nrm inputFile\n\nif [[ \"${1}\" -eq 0 ]]\nthen\n\tfor
-    INDEX in {0..9}\n\tdo\n\t\tVALUE=$(echo ${RANDOM}|head -c2)\n\t\techo \"${INDEX},
-    ${VALUE}\" >> inputFile\n\tdone\n\texit 1\nfi\n\nif [[ \"${1}\" -gt 0 ]]\nthen\n\tfor
-    INDEX in $(seq 0 ${1})\n\tdo\n\t\tVALUE=$(echo ${RANDOM}|head -c2)\n                echo
-    \"${INDEX}, ${VALUE}\" >> inputFile\n        done\n        exit 1\nfi\n\n"
+  gencsv.sh: |
+    #!/bin/bash
+    rm inputFile
+    if [[ "${1}" -eq 0 ]]
+    then
+      for INDEX in {0..9}
+      do
+        VALUE=$(echo ${RANDOM}|head -c2)
+        echo "${INDEX}, ${VALUE}" >> inputFile
+      done
+      exit 1
+    fi
+    if [[ "${1}" -gt 0 ]]
+    then
+      for
+        INDEX in $(seq 0 ${1})
+        do
+          VALUE=$(echo ${RANDOM}|head -c2)
+          echo "${INDEX}, ${VALUE}\" >> inputFile
+        done
+      exit 1
+    fi
   inputFile: |
     0, 12
     1, 10
